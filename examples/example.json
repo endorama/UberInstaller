@@ -1,0 +1,53 @@
+/*
+"Package Name": {
+  "cmd"     : {          // Commands to be executed before and after package installation
+    "before": None,      // A command to be executed before package installation
+    "after" : None       // A command to be executed after package installation
+  },
+  "cvs"     : {          // If 'git' type is specified
+    "branch": None,      // Clone the specified branch instead of repository default
+    "folder": None,      // The folder in which clone the repository
+    "url"   : "",        // The URL of the Git repository
+  },
+  "pkg"     : [  ],      // A list of packages to be installed
+  "ppa"     : None,      // Does the package require a extra ppa?
+  "repo"    : None,      // Does the package require a extra repository?
+                         // [ never put VERSION! at least if you don't really need it! ]
+  "skip"    : False,     // Do you want to skip specified package? Set it to True
+  "type"    : "default", // Installation type. Could be 'default' ( use apt-get ),
+        'offline' ( use a file on the host ),
+        'git' ( clone a git repository )
+  "version" : None       // Specific version to be installed
+},
+*/
+{
+  // meta is required!
+  "meta": {
+    "version"           : "precise",      // OS version in which you can find all the specified packages/repository
+    "arch"              : "32"            // 32bit or 64bit specific package file
+  },
+  // packages is required, can contain an unlimited number of package definition
+  "packages": {
+    "Sublime Text 2": {
+      "pkg": [ "sublime-text-2" ],
+      "ppa": "ppa:webupd8team/sublime-text-2"
+    },
+    "ZSH": {
+      "pkg": [ "zsh" ],
+    },
+    "Oh My ZSH": {
+      "cmd": {
+        "before": [ "mv ~/.zshrc ~/.zshrc.orig " ]
+      },
+      "cvs": {
+        "folder": "~/.oh-my-zsh",
+        "url": "git://github.com/robbyrussell/oh-my-zsh.git"
+      },
+      "type": "git"
+    },
+    "Wine": {
+      "pkg": "wine1.3_1.3.28-0ubuntu1~ppa1~natty1_i386.deb",
+      "type": "offline"
+    },
+  }
+}

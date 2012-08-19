@@ -1,0 +1,115 @@
+#!/usr/bin/env python
+
+import argparse, locale, logging, os, os.path, subprocess, sys
+
+from gettext import gettext as _
+
+import UberInstaller.helpers as Helper
+import UberInstaller.installer as Installer
+import UberInstaller.user_input as UserInput
+
+Helper.suppress_traceback_message()
+
+if __name__ == "__main__":
+  try:
+    locale.setlocale(locale.LC_ALL, "")
+  except:
+    pass
+
+  parser = argparse.ArgumentParser(description = 'A script for bulk installation of software. Using the json file as data source, could install packages, ppa, repos, execute commands before and after each installation.')
+  parser.add_argument('json_package_file',
+    help    = 'an integer for the accumulator')
+  parser.add_argument("-n", "--assume-no",
+    action  = "store_true",
+    dest    = "assume_no",
+    default = False,
+    help    = "on warning UberInstall prompt user before continuing. Specifing 'assume_no' no user input is required")
+  parser.add_argument("-y", "--assume-yes",
+    action  = "store_true",
+    dest    = "assume_yes",
+    default = False,
+    help    = "on error UberInstall prompt user before continuing. Specifing 'assume_yes' no user input is required")
+  parser.add_argument('-r', '--dry-run',
+    dest    = 'dry',
+    action  = 'store_true',
+    default = False,
+    help    = 'do not perform installation, but perform check on packages')
+  parser.add_argument("-f", "--force",
+    action  = "store_true",
+    dest    = "force",
+    default = False,
+    help    = "disable check on system OS and architecture")
+  parser.add_argument("--log-level",
+    dest    = "log_level",
+    default = "INFO",
+    help    = "change log level of the application. Can be DEBUG, INFO, WARNING, CRITICAL. Default is INFO")
+  parser.add_argument("-q", "--quiet",
+    action  = "store_true",
+    dest    = "quiet",
+    default = False,
+    help    = "don't print messages to stdout")
+
+  args = parser.parse_args()
+  # print args
+
+  if args.assume_no:
+    UserInput.ASSUME_NO = True
+  if args.assume_yes:
+    UserInput.ASSUME_YES = True
+  if args.dry:
+    Installer.DRY_RUN = True
+  if args.force:
+    Installer.FORCE = True
+  if args.quiet:
+    Helper.LOG_ONLY = True
+
+  if os.geteuid() != 0:
+    Helper.out('error', _("Error: must run as root"))
+    sys.exit(1)
+
+  # calculate numeric loglevel to pass it to loggin.basicConfig
+  numeric_level = getattr(logging, args.log_level.upper(), None)
+  if not isinstance(numeric_level, int):
+    raise ValueError('Invalid log level: %s' % args.log_level)
+  logging.basicConfig(
+    filename = os.path.join(os.path.dirname(args.json_package_file), 'uberinstaller.log'),
+    filemode = 'w',
+    level    = numeric_level,
+    format   = '%(levelname)8s: %(message)s')
+
+  installer = Installer.new(args.json_package_file)
+
+  installer.check_requirements()
+
+  if not args.dry:
+    before_script = os.path.join(os.path.dirname(args.json_package_file), 'pre_cmds')
+    if os.path.isfile(before_script):
+      # check if file is executable
+      if os.access(before_script, os.X_OK):
+        Helper.out('info', 'Executing before command script')
+        ret = subprocess.call('sudo %s' % before_script, shell=True)
+        if ret == 0:
+          Helper.out('success', 'Before script correctly executed')
+        else:
+          Helper.out('error', 'Error in processing before script')
+          UserInput.critical_proceeding('Continue anyway')
+      else:
+        Helper.out('error', 'Before script file has no execution permissions, and cannot be executed')
+
+  installer.parse()
+  installer.run()
+
+  if not args.dry:
+    after_script = os.path.join(os.path.dirname(args.json_package_file), 'post_cmds')
+    if os.path.isfile(after_script):
+      # check if file is executable
+      if os.access(after_script, os.X_OK):
+        Helper.out('info', 'Executing before command script')
+        ret = subprocess.call('sudo %s' % after_script, shell=True)
+        if ret == 0:
+          Helper.out('success', 'After script correctly executed')
+        else:
+          Helper.out('error', 'Error in processing after script')
+          UserInput.critical_proceeding('Continue anyway')
+      else:
+        Helper.out('error', 'After script file has no execution permissions, and cannot be executed')

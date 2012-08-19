@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#  If this script is present in the same folder of the .json file, will be 
+#+ executed after installation ( after package processing ).
+#  The script must have executable rights.
+#  Script will be run with sudo ./post_cmds
+
+echo "Fix mp4 playback"
+mv /usr/lib/i386-linux-gnu/gstreamer-0.10/libgstvideoparsersbad.so /usr/lib/i386-linux-gnu/gstreamer-0.10/libgstvideoparsersbad.so.bak
+
+echo "Show all app in startup menu"
+sed -i 's/NoDisplay=true/NoDisplay=false/g' /etc/xdg/autostart/*.desktop
+
+echo "Restore hibernate option"
+echo "
+[Re-enable hibernate by default]
+Identity=unix-user:*
+Action=org.freedesktop.upower.hibernate
+ResultActive=yes
+" >> /etc/polkit-1/localauthority/50-local.d/com.ubuntu.enable-hibernate.pkla
+

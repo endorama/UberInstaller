@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#  If this script is present in the same folder of the .json file, will be 
+#+ executed before installation ( also precede package preprocessing).
+#  The script must have executable rights.
+#  Script will be run with sudo ./pre_cmds
+
+echo "Enabling Universe and Restricted repossitory"
+cp /etc/apt/sources.list /etc/apt/sources.list.backup
+sudo sed -i -e "s/# deb/deb/g" /etc/apt/sources.list
+sudo apt-get update -qq
