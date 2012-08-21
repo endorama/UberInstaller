@@ -375,14 +375,15 @@ class Installer:
     if DRY_RUN:
       return True
 
-    return self._run_command('sudo apt-add-repository -y "%s"' % ppa)
+    return self._run_command('apt-add-repository -y "%s"' % (ppa))
+
 
   def _install_type_default(self, pkg):
     """" Perform default installation """
     if DRY_RUN:
       return True
     
-    return self._run_command('sudo apt-get install -y -qq "%s"' % (pkg))
+    return self._run_command('apt-get install -y -qq "%s"' % (pkg))
 
 
   def _install_type_git(self, pkg):
@@ -401,9 +402,9 @@ class Installer:
     pkg_name, pkg_ext = os.path.splitext(pkg)
 
     if pkg_ext in ('.deb'):
-      cmd = 'sudo dpkg -i "%s"' % pkg
+      cmd = 'dpkg -i "%s"' % (pkg)
     elif pkg_ext in ('.bin', '.run'):
-      cmd = 'sudo "%s"' % pkg
+      cmd = './"%s"' % (pkg)
     
     return self._run_command(cmd)
 

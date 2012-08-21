@@ -87,7 +87,7 @@ if __name__ == "__main__":
       # check if file is executable
       if os.access(before_script, os.X_OK):
         Helper.out('info', 'Executing before command script')
-        ret = subprocess.call('sudo %s' % before_script, shell=True)
+        ret = subprocess.call('%s' % before_script, shell=True)
         if ret == 0:
           Helper.out('success', 'Before script correctly executed')
         else:
@@ -105,7 +105,7 @@ if __name__ == "__main__":
       # check if file is executable
       if os.access(after_script, os.X_OK):
         Helper.out('info', 'Executing before command script')
-        ret = subprocess.call('sudo %s' % after_script, shell=True)
+        ret = subprocess.call('%s' % after_script, shell=True)
         if ret == 0:
           Helper.out('success', 'After script correctly executed')
         else:
