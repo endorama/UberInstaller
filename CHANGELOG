@@ -1,5 +1,10 @@
-
 0.0.2
+9939834 add LICENSE
+2cef0df update metadata to version 0.0.2
+5edc577 add CHANGELOG to dist
+d16ba8d exclude examples/pkgs folder from dist
+c750ed4 fix strings in uberinstaller script
+0b9ce66 use absolute path for pre_cmds and post_cmds scripts
 a689087 removed sudo from called commands, as uberinstaller must be run as root
 5dd42af add MANIFEST and html files to gitignore
 
