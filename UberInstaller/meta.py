@@ -6,8 +6,8 @@
     (http://www.python.org/dev/peps/pep-0314/)
 """
 
-VERSION_INFO = (0, 0, 1)
-DATE_INFO = (2012, 07,  17) # YEAR, MONTH, DAY
+VERSION_INFO = (0, 0, 2)
+DATE_INFO = (2012, 8,  21) # YEAR, MONTH, DAY
 VERSION = '.'.join(str(i) for i in VERSION_INFO)
 REVISION = '%04d%02d%02d' % DATE_INFO
 AUTHOR = "Edoardo Tenani (Endorama)"
