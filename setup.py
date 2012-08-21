@@ -5,7 +5,7 @@ import UberInstaller.meta as meta
 #This is a list of files to install, and where
 #(relative to the 'root' dir, where setup.py is)
 #You could be more specific.
-files = ["../examples/*"]
+files = ["../examples/example.json", "../examples/pre_cmds", "../examples/post_cmds"]
 
 setup(
   name = meta.PROJECT,
