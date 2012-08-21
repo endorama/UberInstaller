@@ -1,0 +1,7 @@
+
+0.0.2
+a689087 removed sudo from called commands, as uberinstaller must be run as root
+5dd42af add MANIFEST and html files to gitignore
+
+0.0.1
+first release
