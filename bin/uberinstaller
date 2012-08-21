@@ -82,7 +82,7 @@ if __name__ == "__main__":
   installer.check_requirements()
 
   if not args.dry:
-    before_script = os.path.join(os.path.dirname(args.json_package_file), 'pre_cmds')
+    before_script = os.path.abspath(os.path.join(os.path.dirname(args.json_package_file), 'pre_cmds'))
     if os.path.isfile(before_script):
       # check if file is executable
       if os.access(before_script, os.X_OK):
@@ -100,7 +100,7 @@ if __name__ == "__main__":
   installer.run()
 
   if not args.dry:
-    after_script = os.path.join(os.path.dirname(args.json_package_file), 'post_cmds')
+    after_script = os.path.abspath(os.path.join(os.path.dirname(args.json_package_file), 'post_cmds'))
     if os.path.isfile(after_script):
       # check if file is executable
       if os.access(after_script, os.X_OK):
