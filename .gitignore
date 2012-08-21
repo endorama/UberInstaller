@@ -2,3 +2,5 @@ build/*
 dist/*
 examples/pkgs/*
 *.pyc
+MANIFEST
+*.html
