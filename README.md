@@ -136,7 +136,24 @@ Example:
 
 UberInstaller was developed under Ubuntu 11.10 Oneiric Ocelot, used under Ubuntu 12.04 Precise Pangolin and tested under both Oneiric and Precise.
 
-## 4 Contributing
+## LICENSE
+
+Copyright (C) 2012 - Edoardo Tenani <endorama on Github.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+## Contributing
 
 1. Make you own fork
 2. Create a branch "feature-branch" ( name must be more self-explanatory possibile )
@@ -144,10 +161,11 @@ UberInstaller was developed under Ubuntu 11.10 Oneiric Ocelot, used under Ubuntu
 4. Send a pull request on 'develop' branch
 5. Enjoy! ^^
 
-## 5 FAQ
+## FAQ
 
 * > I have some content in a zip files, how can I install it?
 
   As UberInstaller is capable of handling only single file in offline processing, could be a little cucumbersome to understand how to install custom packages or files which are not .bin, .deb, or .run.
 
   For example, I'd like to install a theme for Unity/Gnome Shell. Themes are packaged in zip files, which are not processed by UberInstaller. The easiest solution is to build a .run file using [Makeself](http://megastep.org/makeself/), which can create self-extracting tar.gz archives from folder. Have a look at the documentation, is dead simple and is much more flexible than any other way I found.
+
