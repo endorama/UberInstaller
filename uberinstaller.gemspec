@@ -19,4 +19,7 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'
+
+  gem.add_runtime_dependency 'colored'
+  gem.add_runtime_dependency 'hash_keyword_args'
 end
