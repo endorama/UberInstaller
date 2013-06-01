@@ -18,7 +18,20 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+duplicates are overridden!
+
+Architecture verification:
+ - system => leave to the system to handle architecture package version resolution
+ - i386 => can be run only on 32 bit systems
+ - x86_64 => can be run only on 64 bit systems
+
+Version verification:
+ - codename of OS ( precise on ubuntu )
+
+Installation type:
+ - system
+ - git
+ - local
 
 ## Contributing
 

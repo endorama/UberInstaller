@@ -8,7 +8,7 @@ module Uberinstaller
   class Platform
     include Loggable
 
-    attr_reader :lsb, :uname
+    attr_reader :architecture, :lsb, :uname
     
     # => get platform, detect ubuntu, detect ubuntu version, save lsb params
     # 
@@ -22,15 +22,29 @@ module Uberinstaller
       @uname = nil
       
       get_lsb_informations
-      # get_arch_informations
+      get_arch_informations
+
+      @architecture = @uname[:machine]
     end
 
     def is_ubuntu?
-      @lsb[:id] == 'Ubuntu' if @lsb[:id]
+      return @lsb[:id] == 'Ubuntu' if @lsb[:id]
+      logger.fatal 'lsb is not set, impossible to get OS information'
+      false
+    end
+
+    def is_not_ubuntu?
+      !is_ubuntu?
+    end
+
+    def is_32bit?
+      !is_64bit?
     end
 
     def is_64bit?
-      @uname[:machine] == 'x86_64' if @uname[:machine]
+      return @uname[:machine] == 'x86_64' if @uname[:machine]
+      logger.fatal 'uname is not set, impossible to get machine information'
+      false
     end
 
     private
