@@ -26,7 +26,7 @@ module Uberinstaller
       @meta[:installable]
     end
 
-    def validate_pkg(type)
+    def validate(type)
       case type
       when 'system' then validate_system
       when 'git' then validate_git
@@ -60,8 +60,9 @@ module Uberinstaller
       end
 
       def preprocess_system
+        logger.debug 'Sytem type preprocess'
         begin
-          validate_pkg 'system'
+          validate 'system'
         rescue Exception => e
           @body[:skip] = true
           raise e
@@ -72,19 +73,36 @@ module Uberinstaller
       end
 
       def validate_system
-        logger.debug 'Sytem type installation'
+        logger.debug 'Sytem type validation'
 
-        if !@body.has_key? :pkg or !valid_pkg?
+        if !@body[:system].has_key? :pkg or !valid_pkg?
           raise Uberinstaller::Exception::InvalidPackage.new "#{@name} has a system installation but invalid :pkg is specified, skipping", false
         end
 
-        if @body.has_key? :ppa
-          @meta[:ppa] = Uberinstaller::Ppa.new @body[:ppa]
+        if @body[:system].has_key? :ppa
+          @meta[:ppa] = Uberinstaller::Ppa.new @body[:system][:ppa]
           raise Uberinstaller::Exception::InvalidPpa.new "#{@name} has an invalid ppa, skipping", false unless @meta[:ppa].is_valid?
         end
       end
 
       def install_git
+      end
+
+      def preprocess_git
+        logger.debug 'Git type preprocess'
+        begin
+          validate 'git'
+        rescue Exception => e
+          @body[:skip] = true
+          raise e
+        else
+          # logger.debug @meta[:ppa].debug
+          # @meta[:ppa].add
+        end
+      end
+
+      def validate_git
+        logger.debug 'Git type validation'
       end
 
       def install_local
@@ -94,7 +112,7 @@ module Uberinstaller
 
       def valid_pkg?
         logger.debug 'Validate :pkg'
-        !(@body[:pkg].empty? or @body[:pkg].any? { |a| a.empty? })
+        !(@body[:system][:pkg].empty? or @body[:system][:pkg].any? { |a| a.empty? })
       end
   end
 end

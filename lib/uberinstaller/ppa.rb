@@ -26,6 +26,7 @@ module Uberinstaller
     end
 
     def remove
+      logger.info 'Removing ppa...'
       # `#{@exec} --remove`
     end
   end

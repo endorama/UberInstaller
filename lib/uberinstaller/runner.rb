@@ -49,8 +49,12 @@ module Uberinstaller
 
         logger.info "Package: #{pkg_name}"
         logger.debug "Package content: #{pkg}"
+
+        pkg[:type] = 'system' if pkg.has_key? :system
+        pkg[:type] = 'git' if pkg.has_key? :git
+        pkg[:type] = 'local' if pkg.has_key? :local
         
-        pkg[:type] = 'system' unless pkg.has_key? :type
+        # pkg[:type] = 'system' unless pkg.has_key? :type
 
         case pkg[:type]
         when 'system'
