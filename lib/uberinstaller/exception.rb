@@ -28,5 +28,15 @@ module Uberinstaller
     class InvalidPackage < Exception; end
     # When package with :type => system has an invalid :ppa
     class InvalidPpa < Exception; end
+    # When package with :type => :git has no :folder
+    class InvalidFolder < Exception; end
+    # When package with :type => :git has no :url
+    class MissingUrl < Exception; end
+    # When package with :type => :git :url attribute does not respond 200 http status on check
+    class InvalidUrl < Exception; end
+    # When package with :type => :local has no :pkg attribute
+    class MissingLocalPackage < Exception; end
+    # When package with :type => :local :pkg is not valid
+    class InvalidLocalPackage < Exception; end
   end
 end

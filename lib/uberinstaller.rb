@@ -2,6 +2,8 @@
 
 require "uberinstaller/version"
 
+require "uberinstaller/config"
+
 require 'uberinstaller/exception'
 
 require 'uberinstaller/package_installer'

@@ -33,6 +33,15 @@ Installation type:
  - git
  - local
 
+## ToDo
+
+installation advanced option ( install with dpkg for local install, --force-architecture )
+
+## Docs
+
+http://rubydoc.info/docs/yard/file/docs/GettingStarted.md
+http://rubydoc.info/docs/yard/file/docs/Tags.md
+
 ## Contributing
 
 1. Fork it
