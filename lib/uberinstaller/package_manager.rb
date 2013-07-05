@@ -34,17 +34,18 @@ module Uberinstaller
 
           logger.info "Running action: #{m}"
 
-          Open3.popen3(@commands[m]) { |stdin, stdout, stderr, wait_thr|
-            pid = wait_thr.pid # pid of the started process.
-            logger.debug "Running pid: #{pid}"
+          logger.warn "execution disabled"
+          # Open3.popen3(@commands[m]) { |stdin, stdout, stderr, wait_thr|
+          #   pid = wait_thr.pid # pid of the started process.
+          #   logger.debug "Running pid: #{pid}"
 
-            logger.debug stdout.readlines
+          #   logger.debug stdout.readlines
 
-            exit_status = wait_thr.value.to_i # Process::Status object returned.
-            logger.debug "Exit status: #{exit_status}"
-            logger.error 'Some error happended during execution:' unless exit_status == 0
-            logger.error stderr.readlines unless exit_status == 0
-          }
+          #   exit_status = wait_thr.value.to_i # Process::Status object returned.
+          #   logger.debug "Exit status: #{exit_status}"
+          #   logger.error 'Some error happended during execution:' unless exit_status == 0
+          #   logger.error stderr.readlines unless exit_status == 0
+          # }
         else
           puts "There's no method called #{m} here -- please try again."  
         end
