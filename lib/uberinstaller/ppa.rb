@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
 
+require 'uberinstaller/config'
 require 'uberinstaller/logger'
+require "uberinstaller/package_manager"
 
 module Uberinstaller
   class Ppa
@@ -8,7 +10,8 @@ module Uberinstaller
 
     def initialize(ppa)
       @ppa = ppa
-      @exec = "apt-add-repository --yes '#{@ppa}'"
+      # dinamically create instance of the correct PackageManager subclass ( https://www.ruby-forum.com/topic/111997 )
+      @exec = ("Uberinstaller::PackageManager::" + Uberinstaller::Config.remote_package_manager).split('::').inject(Object) {|scope,name| scope.const_get(name)}.new
     end
 
     def is_valid?
@@ -16,18 +19,14 @@ module Uberinstaller
       @ppa =~ /ppa:[a-z0-9-]+(\/[a-z0-9-]+)?/
     end
 
-    def debug
-      @exec
-    end
-
     def add
       logger.info 'Adding ppa...'
-      # `#{@exec}`
+      @exec.add_repository
     end
 
     def remove
       logger.info 'Removing ppa...'
-      # `#{@exec} --remove`
+      @exec.remove_repository
     end
   end
 end

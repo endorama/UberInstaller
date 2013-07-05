@@ -17,10 +17,10 @@ module Uberinstaller
     @local_pkg_path = nil
     # @!attribute [rw] remote_package_manager
     #   the package manager used to install system type packages
-    @remote_package_manager = 'apt'
+    @remote_package_manager = 'Apt'
     # @!attribute [rw] local_package_manager
     #   the package manager used to install local type packages
-    @local_package_manager = 'dpkg'
+    @local_package_manager = 'Dpkg'
 
 
     # @!attribute [r] app_name

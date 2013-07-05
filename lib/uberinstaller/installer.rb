@@ -91,7 +91,6 @@ module Uberinstaller
           raise e
         else
           if @body[:system].has_key? :ppa
-            logger.debug @meta[:ppa].debug
             @meta[:ppa].add
           end
         end
