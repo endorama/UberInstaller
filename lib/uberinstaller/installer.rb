@@ -3,7 +3,7 @@
 require 'uberinstaller/logger'
 require 'uberinstaller/config'
 require 'uberinstaller/exception'
-require 'uberinstaller/ppa'
+require 'uberinstaller/package_manager'
 
 require 'octokit'
 
@@ -84,15 +84,16 @@ module Uberinstaller
       # Launch validation and on success add the ppa to the system, if any
       def preprocess_system
         logger.debug 'Sytem type preprocess'
+
+        package_manager = ("Uberinstaller::PackageManager::" + Uberinstaller::Config.remote_package_manager).split('::').inject(Object) {|scope,name| scope.const_get(name)}.new
+
         begin
           validate 'system'
         rescue Exception => e
           @body[:skip] = true
           raise e
         else
-          if @body[:system].has_key? :ppa
-            @meta[:ppa].add
-          end
+          package_manager.add_repository @body[:system][:ppa] if @body[:system].has_key? :ppa
         end
       end
 
@@ -110,8 +111,7 @@ module Uberinstaller
         end
 
         if @body[:system].has_key? :ppa
-          @meta[:ppa] = Uberinstaller::Ppa.new @body[:system][:ppa]
-          raise Uberinstaller::Exception::InvalidPpa.new "#{@name} has an invalid ppa, skipping", false unless @meta[:ppa].is_valid?
+          raise Uberinstaller::Exception::InvalidPpa.new "#{@name} has an invalid ppa, skipping", false unless valid_ppa? @body[:system][:ppa]
         end
       end
 
@@ -190,6 +190,17 @@ module Uberinstaller
       end
 
       ###
+
+      # Check if the string is a valid repository
+      #
+      # TODO: chack for repo, not only ppa
+      # @param repository [String] a valid string repository/PPA URL
+      #
+      # @return [bool] true if the string is a valid repository, false otherwise
+      def valid_repository?(repository)
+        logger.debug 'Validate repository'
+        repository =~ /ppa:[a-z0-9-]+(\/[a-z0-9-]+)?/
+      end
 
       # Check if a system package is valid
       #
