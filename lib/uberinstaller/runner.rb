@@ -23,9 +23,9 @@ module Uberinstaller
       # check if element has already been processed
       @unprocessed = true
 
-      @parser = Uberinstaller::Parser.new file
+      @parser = Parser.new file
       
-      @platform = Uberinstaller::Platform.new
+      @platform = Platform.new
 
       logger.warn "Platform is not Ubuntu, please report any inconvenient behaviour" unless platform.is_ubuntu?
       
@@ -37,14 +37,14 @@ module Uberinstaller
 
     # Verify that platform architecture match the one specified in the config file
     #
-    # @raise [Uberinstaller::Exception::WrongArchitecture] if the architecture do not match configuration file
+    # @raise [Exception::WrongArchitecture] if the architecture do not match configuration file
     def verify_architecture
       unless parser.data[:meta][:arch] == 'system'
         logger.debug 'Verifying architecture...'
 
         unless parser.data[:meta][:arch] == platform.architecture
-          raise Uberinstaller::Exception::WrongArchitecture, 'Installation file requires 32bit architecture' if parser.data[:meta][:arch] == 'i386'
-          raise Uberinstaller::Exception::WrongArchitecture, 'Installation file requires 64bit architecture' if parser.data[:meta][:arch] == 'x86_64'
+          raise Exception::WrongArchitecture, 'Installation file requires 32bit architecture' if parser.data[:meta][:arch] == 'i386'
+          raise Exception::WrongArchitecture, 'Installation file requires 64bit architecture' if parser.data[:meta][:arch] == 'x86_64'
         else
           logger.info "Architecture match installation file requirements"
         end
@@ -55,9 +55,9 @@ module Uberinstaller
 
     # Verify that the OS version match the one specified in the config file
     #
-    # @raise [Uberinstaller::Exception::WrongVersion] if the version do not match
+    # @raise [Exception::WrongVersion] if the version do not match
     def verify_os_version
-      raise Uberinstaller::Exception::WrongVersion, "Installation file requires a different version. Version required: #{parser.data[:meta][:version]}" unless parser.data[:meta][:version] == platform.lsb[:codename]
+      raise Exception::WrongVersion, "Installation file requires a different version. Version required: #{parser.data[:meta][:version]}" unless parser.data[:meta][:version] == platform.lsb[:codename]
     end
 
     # Preprocess all packages performing validation
@@ -76,14 +76,13 @@ module Uberinstaller
         pkg[:type] = 'git' if pkg.has_key? :git
         pkg[:type] = 'local' if pkg.has_key? :local
 
-        
-        
-        
+        installer = Installer.new(pkg_name, pkg)
+
         case pkg[:type]
         when 'system'
           begin 
-            Uberinstaller::PackageInstaller.new(pkg_name, pkg).preprocess 'system'
-          rescue Uberinstaller::Exception::InvalidPackage, Uberinstaller::Exception::InvalidPpa => e
+            installer.preprocess 'system'
+          rescue Exception::InvalidPackage, Exception::InvalidPpa => e
             logger.error e.message
 
             pkg[:errors] = Array.new # add array to store errors
@@ -91,8 +90,8 @@ module Uberinstaller
           end
         when 'git'
           begin
-            Uberinstaller::PackageInstaller.new(pkg_name, pkg).preprocess 'git'
-          rescue Uberinstaller::Exception::InvalidFolder, Uberinstaller::Exception::MissingUrl, Uberinstaller::Exception::InvalidUrl => e
+            installer.preprocess 'git'
+          rescue Exception::InvalidFolder, Exception::MissingUrl, Exception::InvalidUrl => e
             logger.error e.message
             
             pkg[:errors] = Array.new # add array to store errors
@@ -100,8 +99,8 @@ module Uberinstaller
           end
         when 'local'
           begin
-            Uberinstaller::PackageInstaller.new(pkg_name, pkg).preprocess 'local'
-          rescue Uberinstaller::Exception::MissingLocalPackage, Uberinstaller::Exception::InvalidLocalPackage => e
+            installer.preprocess 'local'
+          rescue Exception::MissingLocalPackage, Exception::InvalidLocalPackage => e
             logger.error e.message
             
             pkg[:errors] = Array.new # add array to store errors
