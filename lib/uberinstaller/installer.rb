@@ -8,11 +8,8 @@ require 'uberinstaller/ppa'
 require 'octokit'
 
 module Uberinstaller
-  class PackageInstaller
+  class Installer
     include Loggable
-
-    # @!attribute [r] meta
-    #   an Hash containing private processing info for the class
 
     # Initialize the class
     #
@@ -22,6 +19,7 @@ module Uberinstaller
       @name = pkg_name
       @body = pkg_body
       
+      # an Hash containing private processing info for the class
       @meta = Hash.new
       @meta[:installable] = true
 
