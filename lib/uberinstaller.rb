@@ -6,6 +6,7 @@ require 'uberinstaller/config'
 require 'uberinstaller/exception'
 require 'uberinstaller/installer'
 require 'uberinstaller/platform'
+require 'uberinstaller/package_manager'
 require 'uberinstaller/parser'
 require 'uberinstaller/runner'
 
