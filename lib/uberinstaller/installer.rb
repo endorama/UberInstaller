@@ -110,7 +110,7 @@ module Uberinstaller
         end
 
         if @body[:system].has_key? :ppa
-          raise Uberinstaller::Exception::InvalidPpa.new "#{@name} has an invalid ppa, skipping", false unless valid_ppa? @body[:system][:ppa]
+          raise Uberinstaller::Exception::InvalidPpa.new "#{@name} has an invalid ppa, skipping", false unless valid_repository? @body[:system][:ppa]
         end
       end
 
