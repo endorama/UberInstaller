@@ -106,6 +106,7 @@ module Uberinstaller
           rescue Exception::InvalidPackage, Exception::InvalidPpa => e
             logger.error e.message
 
+            pkg[:skip] = true
             pkg[:errors] = Array.new # add array to store errors
             pkg[:errors] << e.message
           end
@@ -115,6 +116,7 @@ module Uberinstaller
           rescue Exception::InvalidFolder, Exception::MissingUrl, Exception::InvalidUrl => e
             logger.error e.message
             
+            pkg[:skip] = true
             pkg[:errors] = Array.new # add array to store errors
             pkg[:errors] << e.message
           end
@@ -124,6 +126,7 @@ module Uberinstaller
           rescue Exception::MissingLocalPackage, Exception::InvalidLocalPackage => e
             logger.error e.message
             
+            pkg[:skip] = true
             pkg[:errors] = Array.new # add array to store errors
             pkg[:errors] << e.message
           end
