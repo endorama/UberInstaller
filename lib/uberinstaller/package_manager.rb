@@ -19,3 +19,4 @@ end
 
 require 'uberinstaller/package_managers/base'
 require 'uberinstaller/package_managers/apt'
+require 'uberinstaller/package_managers/dpkg'
