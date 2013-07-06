@@ -24,8 +24,7 @@ module Uberinstaller
       @meta[:installable] = true
 
       if @body.has_key? :skip and @body[:skip]
-        logger.info "#{@name} has :skip option active, skipping "
-        @meta[:installable] = false
+        logger.warn "#{@name} has :skip option active, skipping "
       end
     end
 
@@ -33,7 +32,7 @@ module Uberinstaller
     #
     # @return [bool] true if the package can be installed, false otherwise
     def installable?
-      @meta[:installable]
+      @body[:skip] ? false : true
     end
 
     # Perform package validation based upon installation type
