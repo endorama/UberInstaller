@@ -6,9 +6,7 @@ module Uberinstaller
   module PackageManager
     class Apt < Base
 
-      def initialize
-        super
-
+      def set_commands
         @commands[:add_repository] = "apt-add-repository -y" 
         @commands[:install] = "apt-get install -y" 
         @commands[:update] = "apt-get update" 
