@@ -53,9 +53,9 @@ module Uberinstaller
       return unless installable?
 
       case type
-      when 'system' then install_system
       when 'git' then install_git
       when 'local' then install_local
+      when 'system' then install_system
       end
     end
 
@@ -66,16 +66,26 @@ module Uberinstaller
       return unless installable?
 
       case type
-      when 'system' then preprocess_system
       when 'git' then preprocess_git
       when 'local' then preprocess_local
+      when 'system' then preprocess_system
       end
     end
 
     private
 
+      def remote_package_manager
+        @remote_package_manager ||= PackageManager.new 'remote'
+      end
+
       def install_system
         logger.debug 'Sytem type installation'
+
+        if @body[:system][:pkg].kind_of?(Array)
+          @body[:system][:pkg].each { |pkg| remote_package_manager.install pkg }
+        elsif condition @body[:system][:pkg].kind_of?(String)
+          remote_package_manager.install @body[:system][:pkg]
+        end
       end
 
       # Preprocess a system type package.
@@ -84,15 +94,13 @@ module Uberinstaller
       def preprocess_system
         logger.debug 'Sytem type preprocess'
 
-        package_manager = ("Uberinstaller::PackageManager::" + Uberinstaller::Config.remote_package_manager).split('::').inject(Object) {|scope,name| scope.const_get(name)}.new
-
         begin
           validate 'system'
         rescue Exception => e
           @body[:skip] = true
           raise e
         else
-          package_manager.add_repository @body[:system][:ppa] if @body[:system].has_key? :ppa
+          remote_package_manager.add_repository @body[:system][:ppa] if @body[:system].has_key? :ppa
         end
       end
 

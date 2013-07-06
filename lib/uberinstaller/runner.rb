@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 require 'uberinstaller/logger'
+require 'uberinstaller/package_manager'
 
 module Uberinstaller
   class Runner
@@ -35,29 +36,49 @@ module Uberinstaller
       @packages = parser.data[:packages]
     end
 
-    # Verify that platform architecture match the one specified in the config file
-    #
-    # @raise [Exception::WrongArchitecture] if the architecture do not match configuration file
-    def verify_architecture
-      unless parser.data[:meta][:arch] == 'system'
-        logger.debug 'Verifying architecture...'
+    def install
+      logger.info 'Installing packages...'
 
-        unless parser.data[:meta][:arch] == platform.architecture
-          raise Exception::WrongArchitecture, 'Installation file requires 32bit architecture' if parser.data[:meta][:arch] == 'i386'
-          raise Exception::WrongArchitecture, 'Installation file requires 64bit architecture' if parser.data[:meta][:arch] == 'x86_64'
+      @packages.each do |p|
+        pkg_name = p[0].to_s
+        pkg = p[1]
+
+        logger.info "Installing #{pkg_name}"
+
+        installer = Installer.new(pkg_name, pkg)
+
+        case pkg[:type]
+        when 'system'
+          begin 
+            installer.install 'system'
+          rescue Exception => e
+            logger.error e.message
+
+            pkg[:errors] = Array.new # add array to store errors
+            pkg[:errors] << e.message
+          end
+        when 'git'
+          begin
+            installer.install 'git'
+          rescue Exception => e
+            logger.error e.message
+            
+            pkg[:errors] = Array.new # add array to store errors
+            pkg[:errors] << e.message
+          end
+        when 'local'
+          begin
+            installer.install 'local'
+          rescue Exception => e
+            logger.error e.message
+            
+            pkg[:errors] = Array.new # add array to store errors
+            pkg[:errors] << e.message
+          end
         else
-          logger.info "Architecture match installation file requirements"
+          logger.error "#{pkg_name} :type is not supported"
         end
-      else
-        logger.warn "Installation file does not specify a required architecture"
       end
-    end
-
-    # Verify that the OS version match the one specified in the config file
-    #
-    # @raise [Exception::WrongVersion] if the version do not match
-    def verify_os_version
-      raise Exception::WrongVersion, "Installation file requires a different version. Version required: #{parser.data[:meta][:version]}" unless parser.data[:meta][:version] == platform.lsb[:codename]
     end
 
     # Preprocess all packages performing validation
@@ -111,9 +132,36 @@ module Uberinstaller
         end
       end
 
-      require 'pp'
-      pp @packages
+      PackageManager.new('remote').update
     end
 
+    # Verify that platform architecture match the one specified in the config file
+    #
+    # @raise [Exception::WrongArchitecture] if the architecture do not match configuration file
+    def verify_architecture
+      unless parser.data[:meta][:arch] == 'system'
+        logger.debug 'Verifying architecture...'
+
+        unless parser.data[:meta][:arch] == platform.architecture
+          raise Exception::WrongArchitecture, 'Installation file requires 32bit architecture' if parser.data[:meta][:arch] == 'i386'
+          raise Exception::WrongArchitecture, 'Installation file requires 64bit architecture' if parser.data[:meta][:arch] == 'x86_64'
+        else
+          logger.info "Architecture match installation file requirements"
+        end
+      else
+        logger.warn "Installation file does not specify a required architecture"
+      end
+    end
+
+    # Verify that the OS version match the one specified in the config file
+    #
+    # @raise [Exception::WrongVersion] if the version do not match
+    def verify_os_version
+      raise Exception::WrongVersion, "Installation file requires a different version. Version required: #{parser.data[:meta][:version]}" unless parser.data[:meta][:version] == platform.lsb[:codename]
+    end
+
+    private
+      def handle_exception(exception, pkg)
+      end
   end
 end
