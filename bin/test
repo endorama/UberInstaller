@@ -21,17 +21,17 @@ begin
   Uberinstaller::Config.local_pkg_path = File.dirname file unless Uberinstaller::Config.local_pkg_path
   runner = Uberinstaller.new file
 
-  begin
+  # begin
     runner.preprocess
-  rescue Exception => e
-    puts e
-  end
+  # rescue Exception => e
+    # puts e
+  # end
 
-  begin
+  # begin
     runner.install
-  rescue Exception => e
-    puts e
-  end
+  # rescue Exception => e
+    # puts e
+  # end
 
 rescue Uberinstaller::Exception::WrongVersion, Uberinstaller::Exception::WrongArchitecture => e
   exit(127)
