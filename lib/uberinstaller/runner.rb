@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 
 require 'uberinstaller/logger'
-require 'uberinstaller/package_manager'
 
 module Uberinstaller
   class Runner
@@ -43,9 +42,12 @@ module Uberinstaller
         pkg_name = p[0].to_s
         pkg = p[1]
 
+        installer = Installer.new(pkg_name, pkg)
+        commander = Commander.new(pkg_name, pkg)
+
         logger.info "Installing #{pkg_name}"
 
-        installer = Installer.new(pkg_name, pkg)
+        commander.before
 
         case pkg[:type]
         when 'system'
@@ -78,6 +80,8 @@ module Uberinstaller
         else
           logger.error "#{pkg_name} :type is not supported"
         end
+
+        commander.after
       end
     end
 

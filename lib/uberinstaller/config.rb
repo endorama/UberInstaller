@@ -7,9 +7,14 @@ module Uberinstaller
   # Shared configuration for Uberinstaller
   module Config
     class << self
-      attr_accessor :local_package_manager, :local_pkg_path, :remote_package_manager
+      attr_accessor :local_package_manager, :remote_package_manager
 
       attr_reader :app_name, :app_version
+
+      attr_writer :local_pkg_path
+      def local_pkg_path
+        File.join @local_pkg_path, 'pkgs' if @local_pkg_path
+      end
     end
 
     # @!attribute [rw] local_pkg_path

@@ -3,6 +3,7 @@
 require 'uberinstaller/version'
 require 'uberinstaller/config'
 
+require 'uberinstaller/commander'
 require 'uberinstaller/exception'
 require 'uberinstaller/installer'
 require 'uberinstaller/platform'

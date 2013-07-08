@@ -82,6 +82,10 @@ module Uberinstaller
         @local_package_manager ||= PackageManager.new 'local'
       end
 
+      def git_package_manager
+        @git_package_manager ||= PackageManager.new 'git'
+      end
+
       def install_system
         logger.debug 'Sytem type installation'
 
@@ -127,8 +131,8 @@ module Uberinstaller
       end
 
       def install_git
-        if @body[:system][:url].kind_of?(String)
-          git_package_manager.install @body[:system][:url] + " " + @body[:system][:folder]
+        if @body[:git][:url].kind_of?(String)
+          git_package_manager.install @body[:git][:url] + " " + @body[:git][:folder]
         else
           raise Exception::MultipleRepositoriesNotSupported
         end
@@ -176,11 +180,12 @@ module Uberinstaller
       end
 
       def install_local
-        if @body[:system][:pkg].kind_of?(String)
-          if File.extname @body[:system][:pkg] == '.deb'
-            local_package_manager.install @body[:system][:pkg]
+        if @body[:local][:pkg].kind_of?(String)
+          if File.extname(@body[:local][:pkg]) == '.deb'
+            local_package_manager.install @body[:local][:pkg]
           else
-            `./#{@body[:system][:pkg]}`
+            pkg_path = File.join Config.local_pkg_path, @body[:local][:pkg]
+            # `./#{pkg_path}`
           end
         else
           raise Exception::MultipleLocalFileNotSupported
@@ -244,7 +249,7 @@ module Uberinstaller
       # @return [bool] true if the package is validw, false otherwise
       def valid_local_pkg?
         logger.debug 'Validate local pkg'
-        File.file?(File.join Uberinstaller::Config.local_pkg_path, 'pkgs', @body[:local][:pkg])
+        File.file?(File.join Uberinstaller::Config.local_pkg_path, @body[:local][:pkg])
       end
   end
 end
