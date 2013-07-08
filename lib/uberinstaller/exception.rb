@@ -38,5 +38,9 @@ module Uberinstaller
     class MissingLocalPackage < Exception; end
     # When package with :type => :local :pkg is not valid
     class InvalidLocalPackage < Exception; end
+    # When :url for a :type => :git package is not a String
+    class MultipleRepositoriesNotSupported < Exception; end
+    # When :pkg for a :type => :local package is not a String
+    class MultipleLocalFileNotSupported < Exception; end
   end
 end

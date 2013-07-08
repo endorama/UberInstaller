@@ -78,6 +78,10 @@ module Uberinstaller
         @remote_package_manager ||= PackageManager.new 'remote'
       end
 
+      def local_package_manager
+        @local_package_manager ||= PackageManager.new 'local'
+      end
+
       def install_system
         logger.debug 'Sytem type installation'
 
@@ -123,6 +127,11 @@ module Uberinstaller
       end
 
       def install_git
+        if @body[:system][:url].kind_of?(String)
+          git_package_manager.install @body[:system][:url] + " " + @body[:system][:folder]
+        else
+          raise Exception::MultipleRepositoriesNotSupported
+        end
       end
 
       # Preprocess a git type package
@@ -167,6 +176,15 @@ module Uberinstaller
       end
 
       def install_local
+        if @body[:system][:pkg].kind_of?(String)
+          if File.extname @body[:system][:pkg] == '.deb'
+            local_package_manager.install @body[:system][:pkg]
+          else
+            `./#{@body[:system][:pkg]}`
+          end
+        else
+          raise Exception::MultipleLocalFileNotSupported
+        end
       end
 
       # Preprocess a local type package
