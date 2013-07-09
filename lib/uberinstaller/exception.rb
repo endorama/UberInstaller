@@ -24,8 +24,7 @@ module Uberinstaller
     class WrongArchitecture < Exception; end
     # OS version in JSON file different from current OS version ( by codename or number )
     class WrongVersion < Exception; end
-    # When package with :type => system has no :pkg specified
-    class InvalidPackage < Exception; end
+    
     # When package with :type => system has an invalid :ppa
     class InvalidPpa < Exception; end
     # When package with :type => :git has no :folder
@@ -44,3 +43,6 @@ module Uberinstaller
     class MultipleLocalFileNotSupported < Exception; end
   end
 end
+
+require 'uberinstaller/exceptions/command_not_processable'
+require 'uberinstaller/exceptions/invalid_package'

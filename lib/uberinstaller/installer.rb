@@ -122,7 +122,7 @@ module Uberinstaller
         logger.debug 'Sytem type validation'
 
         if !@body[:system].has_key? :pkg or !valid_pkg?
-          raise Uberinstaller::Exception::InvalidPackage.new "#{@name} has a system installation but invalid :pkg is specified, skipping", false
+          raise Uberinstaller::Exception::InvalidPackage, @name
         end
 
         if @body[:system].has_key? :ppa
