@@ -42,6 +42,8 @@ installation advanced option ( install with dpkg for local install, --force-arch
 http://rubydoc.info/docs/yard/file/docs/GettingStarted.md
 http://rubydoc.info/docs/yard/file/docs/Tags.md
 
+http://gorails.com/setup/ubuntu
+
 ## Contributing
 
 1. Fork it
