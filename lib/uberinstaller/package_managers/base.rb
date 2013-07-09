@@ -49,7 +49,6 @@ module Uberinstaller
         if @commands.has_key? m
           debug m, args
 
-          logger.warn "execution disabled"
           # Open3.popen3(@commands[m]) { |stdin, stdout, stderr, wait_thr|
           #   pid = wait_thr.pid # pid of the started process.
           #   logger.debug "Running pid: #{pid}"
