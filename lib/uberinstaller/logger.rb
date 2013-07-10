@@ -47,7 +47,14 @@ module Uberinstaller
       # @param classname [String] the name of the class for which a logger instance must be retrieved
       # @return [Object] the instance of the logger class for the specified Class
       def configure_logger_for(classname)
-        logger = Logger.new(@log_path)
+        # handle case in which log path does not exists
+        begin
+          logger = Logger.new(@log_path)
+        rescue Errno::ENOENT
+          FileUtils.mkdir_p File.dirname @log_path
+          retry
+        end
+
         logger.progname = classname
         logger.level = @level
         logger.formatter = proc { |severity, datetime, progname, msg|
