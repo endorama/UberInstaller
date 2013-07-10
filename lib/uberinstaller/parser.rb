@@ -16,8 +16,7 @@ module Uberinstaller
       if File.exists?(file)
         @file = file
       else
-        logger.fatal "Cannot find #{file}, probably a mistyped path?"
-        raise Uberinstaller::Exception::ParserArgumentError, ':file does not exists'
+        raise Uberinstaller::Exception::ParserArgumentError, file
       end
 
       @json = nil
@@ -36,8 +35,8 @@ module Uberinstaller
         @json = IO.read(@file)
         # Comments are stripped out! FUCK YEAH!
         @data = JSON.parse @json, :symbolize_names => true
-      rescue Exception => e  
-        raise Uberinstaller::Exception::ParseError, e
+      rescue JSON::ParserError
+        raise Uberinstaller::Exception::JsonParseError, @file
       else
         
         @data

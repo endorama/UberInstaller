@@ -150,8 +150,7 @@ module Uberinstaller
         logger.debug 'Verifying architecture...'
 
         unless parser.data[:meta][:arch] == platform.architecture
-          raise Exception::WrongArchitecture, 'Installation file requires 32bit architecture' if parser.data[:meta][:arch] == 'i386'
-          raise Exception::WrongArchitecture, 'Installation file requires 64bit architecture' if parser.data[:meta][:arch] == 'x86_64'
+          raise Exception::WrongArchitecture, parser.data[:meta][:arch]
         else
           logger.info "Architecture match installation file requirements"
         end
@@ -164,7 +163,7 @@ module Uberinstaller
     #
     # @raise [Exception::WrongVersion] if the version do not match
     def verify_os_version
-      raise Exception::WrongVersion, "Installation file requires a different version. Version required: #{parser.data[:meta][:version]}" unless parser.data[:meta][:version] == platform.lsb[:codename]
+      raise Exception::WrongVersion, parser.data[:meta][:version] unless parser.data[:meta][:version] == platform.lsb[:codename]
     end
 
     private

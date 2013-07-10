@@ -126,7 +126,7 @@ module Uberinstaller
         end
 
         if @body[:system].has_key? :ppa
-          raise Uberinstaller::Exception::InvalidPpa.new "#{@name} has an invalid ppa, skipping", false unless valid_repository? @body[:system][:ppa]
+          raise Uberinstaller::Exception::InvalidPpa, @name unless valid_repository? @body[:system][:ppa]
         end
       end
 
@@ -162,11 +162,11 @@ module Uberinstaller
         logger.debug 'Git type validation'
 
         if !@body[:git].has_key? :folder
-          raise Uberinstaller::Exception::InvalidFolder.new "#{@name}  :folder attribute invalid or missing", false
+          raise Uberinstaller::Exception::InvalidFolder, @name
         end
 
         if !@body[:git].has_key? :url
-          raise Uberinstaller::Exception::MissingUrl.new "#{@name} :url attribute is missing", false
+          raise Uberinstaller::Exception::MissingUrl, @name
         else
           repo_url = @body[:git][:url].split('github.com')[1].split('.git')[0]
           repo_url[0] = ''
@@ -174,7 +174,7 @@ module Uberinstaller
           begin
             Octokit.repo repo_url
           rescue
-            raise Uberinstaller::Exception::InvalidUrl.new "#{@name} :url seems to not be a valid repo, please check", false
+            raise Uberinstaller::Exception::InvalidUrl, @name
           end
         end
       end
@@ -213,9 +213,9 @@ module Uberinstaller
         logger.debug 'Local type validation'
 
         if !@body[:local].has_key? :pkg
-          raise Uberinstaller::Exception::MissingLocalPackage.new "#{@name} :pkg seems not to be a valid local package", false
+          raise Uberinstaller::Exception::MissingLocalPackage, @name
         else
-          raise Uberinstaller::Exception::InvalidLocalPackage.new "#{@name} :pkg seems not to be a valid local package", false if !valid_local_pkg?
+          raise Uberinstaller::Exception::InvalidLocalPackage, @name if !valid_local_pkg?
         end
       end
 
