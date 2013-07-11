@@ -26,4 +26,5 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'colored'
   gem.add_runtime_dependency 'hash_keyword_args'
   gem.add_runtime_dependency 'octokit'
+  gem.add_runtime_dependency 'thor'
 end
