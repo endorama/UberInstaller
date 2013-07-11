@@ -4,6 +4,7 @@ require 'uberinstaller/package_manager'
 
 module Uberinstaller
   module PackageManager
+    # Dpkg package manager
     class Dpkg < Base
 
       def set_commands

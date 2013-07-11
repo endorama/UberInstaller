@@ -12,6 +12,7 @@ module Uberinstaller
 
       attr_reader :commands
 
+      # Create the package manager
       def initialize
         @commands = Hash.new
         @commands = {
@@ -33,12 +34,20 @@ module Uberinstaller
       # example )
       def set_commands; end
 
+      # Print to log for debug purposes
+      #
+      # @param action [String] the action that is being performed
+      # @param args [Array] an array of arguments for the specified action
       def debug(action, args = [])
         logger.debug "action : #{action}"
         logger.debug "args   : #{args.join(', ')}" unless args.empty?
         logger.debug "command: #{make_command(action, args)}"
       end
 
+      # Creates a command putting together action and arguments
+      #
+      # @param action [String] the action that is being performed
+      # @param args [Array] an array of arguments for the specified action
       def make_command(action, args = [])
         command = @commands[action.to_sym]
         command += " '" + args.join(' ') + "'" unless args.empty?
@@ -46,6 +55,12 @@ module Uberinstaller
         command
       end
 
+      # All execution is handled dinamically via this function
+      #
+      # If the method called is in the @commands Hash, the specified action is
+      # performed, otherwise a NoMethodError exception
+      #
+      # @raise [NoMethodError] if the method specified is not available
       def method_missing(m, *args, &block)
         if @commands.has_key? m
           debug m, args
@@ -64,7 +79,7 @@ module Uberinstaller
             }
           end
         else
-          puts "There's no method called #{m} here -- please try again."  
+          raise NoMethodError
         end
       end  
     end

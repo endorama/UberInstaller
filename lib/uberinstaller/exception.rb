@@ -16,7 +16,6 @@ module Uberinstaller
       end
     end
 
-    
     # When :pkg for a :type => :local package is not a String
     class MultipleLocalFileNotSupported < Exception; end
   end

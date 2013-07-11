@@ -4,6 +4,7 @@ require 'uberinstaller/package_manager'
 
 module Uberinstaller
   module PackageManager
+    # Git package manager ( a little bit of a hack really )
     class Git < Base
 
       def set_commands

@@ -16,6 +16,10 @@ module Uberinstaller
     #   an Hash rapresenting a package to be installed
     attr_reader :pkg_name, :pkg
     
+    # Initialize the Commander class with the package information
+    #
+    # @param pkg_name [String] the name of the package
+    # @param pkg [Hash] the content of the package
     def initialize(pkg_name, pkg)
       @pkg_name = pkg_name
       @pkg = pkg
@@ -42,6 +46,11 @@ module Uberinstaller
 
     private
 
+      # Execute a command in a subprocess
+      #
+      # All commands will be executed using `sudo`
+      #
+      # @param command [String] the command to be executed
       def exec(command)
         command = "sudo #{command}"
         logger.debug "Executing command: #{command}"
@@ -63,10 +72,20 @@ module Uberinstaller
         end
       end
 
+      # Execute the specified file
+      #
+      # Passes the file to the `exec` function
+      #
+      # @param file [String] the path to the file to be executed
       def exec_file(file)
         exec "./#{file}"
       end
 
+      # Execute the specified action
+      #
+      # Currently available actions are: :after, :before
+      #
+      # @param type [Symbol] a symbol rapresenting an action to be performed
       def run(type)
         file = (type == :after) ? File.join(@after_cmd_path, @pkg[:cmd][type]) : File.join(@before_cmd_path, @pkg[:cmd][type])
 

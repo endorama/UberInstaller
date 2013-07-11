@@ -74,18 +74,28 @@ module Uberinstaller
 
     private
 
+      # The remote package manager object
+      #
+      # @return [Object] an instance of a PackageManager
       def remote_package_manager
         @remote_package_manager ||= PackageManager.new 'remote'
       end
 
+      # The local package manager object
+      #
+      # @return [Object] an instance of a PackageManager
       def local_package_manager
         @local_package_manager ||= PackageManager.new 'local'
       end
 
+      # The git package manager object
+      #
+      # @return [Object] an instance of a PackageManager
       def git_package_manager
         @git_package_manager ||= PackageManager.new 'git'
       end
 
+      # Install a package using the system package manager
       def install_system
         logger.debug 'Sytem type installation'
 
@@ -130,6 +140,7 @@ module Uberinstaller
         end
       end
 
+      # Install a package using the Git package manager
       def install_git
         if @body[:git][:url].kind_of?(String)
           git_package_manager.install @body[:git][:url] + " " + @body[:git][:folder]
@@ -179,6 +190,7 @@ module Uberinstaller
         end
       end
 
+      # Install a package using the Local package manager
       def install_local
         if @body[:local][:pkg].kind_of?(String)
           if File.extname(@body[:local][:pkg]) == '.deb'

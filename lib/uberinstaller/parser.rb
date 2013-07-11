@@ -9,9 +9,14 @@ module Uberinstaller
   class Parser
     include Loggable
 
+    # @!attribute [rw] file
+    #   the file to be parsed
+    # @!attribute [r] data
+    #   an Hash containing data after parsing
     attr_accessor :file
     attr_reader :data
 
+    # Create the parser
     def initialize(file, perform_parse = true)
       if File.exists?(file)
         @file = file

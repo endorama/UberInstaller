@@ -7,6 +7,13 @@ module Uberinstaller
   class Cli < Thor
     default_task :help
 
+    # Main Uberinstaller installation command.
+    #
+    # @param file [String] the JSON file with package informations
+    #
+    # Exit status:
+    #  -   0 => Execution has been done as expected
+    #  - 127 => An error stopped execution
     desc "install FILE", "Install packages from the specified JSON FILE"
     method_option :verbose,
                   :type => :boolean,

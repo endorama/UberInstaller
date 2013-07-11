@@ -5,6 +5,10 @@ require 'uberinstaller/logger'
 
 module Uberinstaller
   module PackageManager
+
+    # Create a new PackageManager instance based on the type
+    #
+    # @param type [String] the type of package manager to create instance for
     def self.new(type)
       case type
       when 'git'    then package_manager = 'Git'

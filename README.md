@@ -1,6 +1,9 @@
 # Uberinstaller
 
-TODO: Write a gem description
+Uberinstaller is a ruby gem that make easy to install system packages from a JSON configuration file.
+Thinked for Ubuntu, can handle pre and post installation commands, repositories and PPA, package installation from system repositories, git repositories or local files.
+
+Has support for different Package Managers as the one in use now can be modified and extended as needed.
 
 ## Installation
 
@@ -15,6 +18,8 @@ And then execute:
 Or install it yourself as:
 
     $ gem install uberinstaller
+
+Also, you need to have `sudo` installed and working on your machine to execute the uberinstaller executable and for every command launched from uberinstaller.
 
 ## Usage
 

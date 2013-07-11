@@ -4,6 +4,7 @@ require 'uberinstaller/package_manager'
 
 module Uberinstaller
   module PackageManager
+    # Apt-Get Package manager
     class Apt < Base
 
       def set_commands

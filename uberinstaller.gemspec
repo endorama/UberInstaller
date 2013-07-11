@@ -8,9 +8,14 @@ Gem::Specification.new do |gem|
   gem.version       = Uberinstaller::VERSION
   gem.authors       = ["Edoardo Tenani"]
   gem.email         = ["edoardo.tenani@gmail.com"]
-  gem.description   = %q{Handle installation of packages from JSON files}
-  gem.summary       = %q{Handle installation of packages from JSON files}
-  gem.homepage      = ""
+  gem.description   = <<-LONGDESC 
+  Uberinstaller is a ruby gem that make easy to install system packages from a JSON configuration file.
+  Thinked for Ubuntu, can handle pre and post installation commands, repositories and PPA, package installation from system repositories, git repositories or local files.
+
+  Supports different Package Managers as the defaults one can be modified, extended and changed as needed.
+  LONGDESC
+  gem.summary       = %q{Install lots of system packages from a single JSON configuration file}
+  gem.homepage      = "https://github.com/endorama/UberInstaller"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

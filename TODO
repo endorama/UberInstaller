@@ -2,3 +2,6 @@
  ☐ installation advanced option ( install with dpkg for local install, --force-architecture )
  ☐ README need refactoring
  ☐ multiple "recipe" inclusion in recipe
+ ☐ support {version} and {arch} in ppa/pkg strings
+ ☐ add repository support, not only ppa
+ ☐ check for superuser!
