@@ -1,2 +1,4 @@
  ☐ add JSON schema validation https://github.com/hoxworth/json-schema
  ☐ installation advanced option ( install with dpkg for local install, --force-architecture )
+ ☐ README need refactoring
+ ☐ multiple "recipe" inclusion in recipe
