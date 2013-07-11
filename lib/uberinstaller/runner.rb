@@ -76,7 +76,7 @@ module Uberinstaller
         when 'local'
           begin
             installer.install 'local'
-          rescue Exception => e
+          rescue Exception::MultipleLocalFilesNotSupported => e
             logger.error e.message
             
             pkg[:errors] = Array.new # add array to store errors
