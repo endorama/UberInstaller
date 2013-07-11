@@ -5,7 +5,7 @@ module Uberinstaller
 
     # When :url for a :type => :git package is not a String
     class MultipleLocalFileNotSupported < Exception
-      def initialize(name)
+      def initialize()
         super "Specify multiple local packages for one package is not supported"
       end
     end
