@@ -200,7 +200,7 @@ module Uberinstaller
             # `./#{pkg_path}`
           end
         else
-          raise Exception::MultipleLocalFileNotSupported
+          raise Exception::MultipleLocalFilesNotSupported
         end
       end
 
