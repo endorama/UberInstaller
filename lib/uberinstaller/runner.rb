@@ -20,6 +20,8 @@ module Uberinstaller
     #
     # @param file [String] the file name to be used for this execution
     def initialize(file)
+      logger.info "Processing JSON file: #{file}"
+      
       # check if element has already been processed
       @unprocessed = true
 
@@ -146,13 +148,15 @@ module Uberinstaller
     #
     # @raise [Exception::WrongArchitecture] if the architecture do not match configuration file
     def verify_architecture
-      unless parser.data[:meta][:arch] == 'system'
-        logger.debug 'Verifying architecture...'
+      if parser.data[:meta][:arch]
+        unless parser.data[:meta][:arch] == 'system'
+          logger.debug 'Verifying architecture...'
 
-        unless parser.data[:meta][:arch] == platform.architecture
-          raise Exception::WrongArchitecture, parser.data[:meta][:arch]
-        else
-          logger.info "Architecture match installation file requirements"
+          unless parser.data[:meta][:arch] == platform.architecture
+            raise Exception::WrongArchitecture, parser.data[:meta][:arch]
+          else
+            logger.info "Architecture match installation file requirements"
+          end
         end
       else
         logger.warn "Installation file does not specify a required architecture"
