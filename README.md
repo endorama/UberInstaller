@@ -33,6 +33,14 @@ Installation type:
  - git
  - local
 
+Command before/after:
+ - in the right folder: cmds/after/ cmds/before/, so specify only the filename, with extension
+ - array of commands
+ - a single command in a string
+
+before all => cmds/before/all.sh
+after all => cmds/after/all.sh
+
 ## Docs
 
 http://rubydoc.info/docs/yard/file/docs/GettingStarted.md
