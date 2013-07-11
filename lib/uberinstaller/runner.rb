@@ -34,6 +34,9 @@ module Uberinstaller
       verify_architecture
       verify_os_version
 
+      # This dummy commander is used to launch before all and after all scripts
+      @global_commander = Commander.new("Dummy package", { :cmd => { :after => "all.sh", :before => "all.sh" }})
+
       @packages = parser.data[:packages]
     end
 
@@ -85,12 +88,17 @@ module Uberinstaller
 
         commander.after
       end
+
+      logger.info 'Executing after all commands...'
+      @global_commander.after
     end
 
     # Preprocess all packages performing validation
     def preprocess
-      logger.info 'Preprocessing packages...'
+      logger.info 'Executing before all commands...'
+      @global_commander.before
 
+      logger.info 'Preprocessing packages...'
       @packages.each do |p|
         pkg_name = p[0].to_s
         pkg = p[1]
