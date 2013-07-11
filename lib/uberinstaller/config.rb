@@ -7,7 +7,7 @@ module Uberinstaller
   # Shared configuration for Uberinstaller
   module Config
     class << self
-      attr_accessor :local_package_manager, :remote_package_manager, :uberdirectory
+      attr_accessor :dry_run, :local_package_manager, :remote_package_manager, :uberdirectory
 
       attr_reader :app_name, :app_version
 
@@ -34,6 +34,10 @@ module Uberinstaller
     # @!attribute [rw] local_package_manager
     #   the package manager used to install local type packages
     @local_package_manager = 'Dpkg'
+
+    # @!attribute [rw] dry_run
+    #   prevent real execution of commands enabling a dummy execution for test and debug purposes
+    @dry_run = false
 
     # @!attribute [r] app_name
     #   Application name

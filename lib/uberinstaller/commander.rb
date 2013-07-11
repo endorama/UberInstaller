@@ -46,19 +46,21 @@ module Uberinstaller
         command = "sudo #{command}"
         logger.debug "Executing command: #{command}"
 
-        # Open3.popen3(command) { |stdin, stdout, stderr, wait_thr|
-        #   pid = wait_thr.pid # pid of the started process.
-        #   logger.debug "Running pid: #{pid}"
+        unless Config.dry_run
+          Open3.popen3(command) { |stdin, stdout, stderr, wait_thr|
+            pid = wait_thr.pid # pid of the started process.
+            logger.debug "Running pid: #{pid}"
 
-        #   logger.debug stdout.readlines
+            logger.debug stdout.readlines
 
-        #   exit_status = wait_thr.value.to_i # Process::Status object returned.
-        #   logger.debug "Exit status: #{exit_status}"
-        #   unless exit_status == 0
-        #     logger.error 'Some error happended during execution:' 
-        #     logger.error stderr.readlines
-        #   end
-        # }
+            exit_status = wait_thr.value.to_i # Process::Status object returned.
+            logger.debug "Exit status: #{exit_status}"
+            unless exit_status == 0
+              logger.error 'Some error happended during execution:' 
+              logger.error stderr.readlines
+            end
+          }
+        end
       end
 
       def exec_file(file)
