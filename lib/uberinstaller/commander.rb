@@ -1,7 +1,8 @@
 # -*- encoding: utf-8 -*-
 
-require 'uberinstaller/logger'
+require 'uberinstaller/config'
 require 'uberinstaller/exception'
+require 'uberinstaller/logger'
 
 module Uberinstaller
 
@@ -18,6 +19,9 @@ module Uberinstaller
     def initialize(pkg_name, pkg)
       @pkg_name = pkg_name
       @pkg = pkg
+
+      @after_cmd_path = File.join Config.command_path, 'after'
+      @before_cmd_path = File.join Config.command_path, 'before'
     end
 
     # Execute after installation command
@@ -39,6 +43,7 @@ module Uberinstaller
     private
 
       def exec(command)
+        command = "sudo #{command}"
         logger.debug "Executing command: #{command}"
 
         # Open3.popen3(command) { |stdin, stdout, stderr, wait_thr|
@@ -57,22 +62,24 @@ module Uberinstaller
       end
 
       def exec_file(file)
-        exec "bash #{file}"
+        exec "./#{file}"
       end
 
       def run(type)
+        file = (type == :after) ? File.join(@after_cmd_path, @pkg[:cmd][type]) : File.join(@before_cmd_path, @pkg[:cmd][type])
+
         logger.debug @pkg[:cmd][type]
         logger.debug 'is array    : ' + (@pkg[:cmd][type].kind_of? Array).to_s
         logger.debug 'is string   : ' + (@pkg[:cmd][type].kind_of? String).to_s
-        logger.debug 'file exists : ' + (@pkg[:cmd][type].kind_of? String).to_s
+        logger.debug 'file exists : ' + (File.exists? file).to_s if @pkg[:cmd][type].kind_of? String
 
         if @pkg[:cmd][type].kind_of? Array
           @pkg[:cmd][type].each do |cmd|
             exec cmd
           end
         elsif @pkg[:cmd][type].kind_of? String
-          if File.exists? @pkg[:cmd][type]
-            exec_file @pkg[:cmd][type]
+          if File.exists? file
+            exec_file file
           else
             exec @pkg[:cmd][type]
           end

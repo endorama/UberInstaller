@@ -7,26 +7,33 @@ module Uberinstaller
   # Shared configuration for Uberinstaller
   module Config
     class << self
-      attr_accessor :local_package_manager, :remote_package_manager
+      attr_accessor :local_package_manager, :remote_package_manager, :uberdirectory
 
       attr_reader :app_name, :app_version
 
-      attr_writer :local_pkg_path
+      def command_path
+        @command_path ||= File.join @uberdirectory, 'cmds'
+      end
       def local_pkg_path
-        File.join @local_pkg_path, 'pkgs' if @local_pkg_path
+        @local_pkg_path ||= File.join @uberdirectory, 'pkgs' 
       end
     end
 
-    # @!attribute [rw] local_pkg_path
+    # @!attribute [rw] uberdirectory
+    #   absolute path to the folder in which the JSON file is located and in which every other installation script must be located
+    @uberdirectory = nil
+    # @!attribute [r] command_path
+    @command_path = nil
+    # @!attribute [r] local_pkg_path
     #   absolute path in which local package for the configuration file are found
     @local_pkg_path = nil
+    
     # @!attribute [rw] remote_package_manager
     #   the package manager used to install system type packages
     @remote_package_manager = 'Apt'
     # @!attribute [rw] local_package_manager
     #   the package manager used to install local type packages
     @local_package_manager = 'Dpkg'
-
 
     # @!attribute [r] app_name
     #   Application name
