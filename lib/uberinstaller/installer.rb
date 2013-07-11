@@ -178,15 +178,15 @@ module Uberinstaller
 
         if !@body[:git].has_key? :url
           raise Uberinstaller::Exception::MissingUrl, @name
-        else
-          repo_url = @body[:git][:url].split('github.com')[1].split('.git')[0]
-          repo_url[0] = ''
+        # else
+        #   repo_url = @body[:git][:url].split('github.com')[1].split('.git')[0]
+        #   repo_url[0] = ''
 
-          begin
-            Octokit.repo repo_url
-          rescue
-            raise Uberinstaller::Exception::InvalidUrl, @name
-          end
+        #   begin
+        #     Octokit.repo repo_url
+        #   rescue
+        #     raise Uberinstaller::Exception::InvalidUrl, @name
+        #   end
         end
       end
 
