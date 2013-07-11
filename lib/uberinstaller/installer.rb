@@ -197,7 +197,7 @@ module Uberinstaller
             local_package_manager.install @body[:local][:pkg]
           else
             pkg_path = File.join Config.local_pkg_path, @body[:local][:pkg]
-            # `./#{pkg_path}`
+            `sudo ./#{pkg_path}`
           end
         else
           raise Exception::MultipleLocalFilesNotSupported
