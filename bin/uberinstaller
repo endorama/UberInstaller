@@ -3,6 +3,4 @@
 require 'uberinstaller'
 require 'uberinstaller/cli'
 
-require 'pry'
- 
 Uberinstaller::Cli.start(ARGV)
