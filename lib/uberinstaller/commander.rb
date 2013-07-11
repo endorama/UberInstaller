@@ -78,7 +78,7 @@ module Uberinstaller
       #
       # @param file [String] the path to the file to be executed
       def exec_file(file)
-        exec "./#{file}"
+        exec "#{file}"
       end
 
       # Execute the specified action
