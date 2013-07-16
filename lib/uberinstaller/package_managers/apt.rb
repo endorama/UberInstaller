@@ -9,7 +9,7 @@ module Uberinstaller
 
       def set_commands
         @commands[:add_repository] = "apt-add-repository -y" 
-        @commands[:install] = "apt-get install -y" 
+        @commands[:install] = "DEBIAN_FRONTEND=gnome apt-get install -y" 
         @commands[:update] = "apt-get update" 
         @commands[:upgrade] = "apt-get upgrade" 
       end

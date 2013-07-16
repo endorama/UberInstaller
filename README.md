@@ -46,6 +46,8 @@ Command before/after:
 before all => cmds/before/all.sh
 after all => cmds/after/all.sh
 
+Blocking package configuration as Debconf in Debian system must be properly avoided ( APT Package Manager use gnome DEBIAN_FRONTEND to avoid apt-get hangs)
+
 ## Docs
 
 http://rubydoc.info/docs/yard/file/docs/GettingStarted.md
