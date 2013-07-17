@@ -104,7 +104,7 @@ module Uberinstaller
 
         if @body[:system][:pkg].kind_of?(Array)
           @body[:system][:pkg].each { |pkg| remote_package_manager.install pkg }
-        elsif condition @body[:system][:pkg].kind_of?(String)
+        elsif @body[:system][:pkg].kind_of?(String)
           remote_package_manager.install @body[:system][:pkg]
         end
       end
