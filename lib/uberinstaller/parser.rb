@@ -43,7 +43,6 @@ module Uberinstaller
       rescue JSON::ParserError
         raise Uberinstaller::Exception::JsonParseError, @file
       else
-        
         @data
       end
     end
