@@ -24,6 +24,7 @@ Also, you need to have `sudo` installed and working on your machine to execute t
 ## Usage
 
 duplicates are overridden!
+order is respected!
 
 Architecture verification:
  - system => leave to the system to handle architecture package version resolution
@@ -37,6 +38,7 @@ Installation type:
  - system
  - git
  - local
+ - json ( no extension )
 
 Command before/after:
  - in the right folder: cmds/after/ cmds/before/, so specify only the filename, with extension

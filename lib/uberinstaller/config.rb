@@ -17,6 +17,9 @@ module Uberinstaller
       def local_pkg_path
         @local_pkg_path ||= File.join @uberdirectory, 'pkgs' 
       end
+      def json_path
+        @json_path ||= File.join @uberdirectory, 'json'
+      end
     end
 
     # @!attribute [rw] uberdirectory
@@ -26,6 +29,9 @@ module Uberinstaller
     @command_path = nil
     # @!attribute [r] local_pkg_path
     #   absolute path in which local package for the configuration file are found
+    @local_pkg_path = nil
+    # @!attribute [r] json_path
+    #   absolute path in which locate json file to be imported in configuration
     @local_pkg_path = nil
     
     # @!attribute [rw] remote_package_manager

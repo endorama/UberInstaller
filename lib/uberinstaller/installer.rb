@@ -43,6 +43,7 @@ module Uberinstaller
       when 'system' then validate_system
       when 'git' then validate_git
       when 'local' then validate_local
+      when 'json' then validate_json
       end
     end
 
@@ -69,6 +70,8 @@ module Uberinstaller
       when 'git' then preprocess_git
       when 'local' then preprocess_local
       when 'system' then preprocess_system
+      when 'json' then preprocess_json
+      else raise Exception::NoPreprocessorException, type
       end
     end
 
@@ -225,9 +228,23 @@ module Uberinstaller
         logger.debug 'Local type validation'
 
         if !@body[:local].has_key? :pkg
-          raise Uberinstaller::Exception::MissingLocalPackage, @name
+          raise Exception::MissingLocalPackage, @name
         else
-          raise Uberinstaller::Exception::InvalidLocalPackage, @name if !valid_local_pkg?
+          raise Exception::InvalidLocalPackage, @name if !valid_local_pkg?
+        end
+      end
+
+      def preprocess_json
+        logger.debug 'JSON type validation'
+        validate 'json'
+      end
+
+      def validate_json
+        if @body[:json].kind_of? String
+          file = File.join Config::json_path, @body[:json] + '.json'
+          raise Exception::JsonFileNotFound, @body[:json] unless File.exists? file
+        else
+          raise Exception::InvalidJson, @name
         end
       end
 

@@ -38,6 +38,10 @@ module Uberinstaller
       @global_commander = Commander.new("Dummy package", { :cmd => { :after => "all.sh", :before => "all.sh" }})
 
       @packages = parser.data[:packages]
+
+      require 'pp'
+
+      pp @packages
     end
 
     def install
@@ -95,6 +99,8 @@ module Uberinstaller
 
     # Preprocess all packages performing validation
     def preprocess
+      json_package = Hash.new
+
       logger.info 'Executing before all commands...'
       @global_commander.before
 
@@ -107,9 +113,7 @@ module Uberinstaller
         logger.debug "Package content: #{pkg}"
 
         # set pkg installation type based on existing key in the package definition
-        pkg[:type] = 'system' if pkg.has_key? :system
-        pkg[:type] = 'git' if pkg.has_key? :git
-        pkg[:type] = 'local' if pkg.has_key? :local
+        pkg[:type] = get_package_type pkg
 
         installer = Installer.new(pkg_name, pkg)
 
@@ -144,10 +148,27 @@ module Uberinstaller
             pkg[:errors] = Array.new # add array to store errors
             pkg[:errors] << e.message
           end
+        when 'json'
+          begin
+            installer.preprocess 'json'
+          rescue StandardError => e
+            logger.error e.message
+
+            pkg[:skip] = true
+            pkg[:errors] = Array.new # add array to store errors
+            pkg[:errors] << e.message
+          else
+            file = File.join Config.json_path, pkg[:json] + '.json'
+            parser = Parser.new(file)
+            data = parser.data[:packages].each { |p| p[1][:type] = get_package_type p[1] }
+            json_package.merge! data
+          end
         else
           logger.error "#{pkg_name} :type is not supported"
         end
       end
+
+      @packages.merge! json_package
 
       PackageManager.new('remote').update
     end
@@ -180,6 +201,13 @@ module Uberinstaller
 
     private
       def handle_exception(exception, pkg)
+      end
+
+      def get_package_type(pkg)
+        return 'system' if pkg.has_key? :system
+        return 'git' if pkg.has_key? :git
+        return 'local' if pkg.has_key? :local
+        return 'json' if pkg.has_key? :json
       end
   end
 end

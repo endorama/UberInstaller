@@ -1,7 +1,14 @@
  ☐ add JSON schema validation https://github.com/hoxworth/json-schema
  ☐ installation advanced option ( install with dpkg for local install, --force-architecture )
  ☐ README need refactoring
- ☐ multiple "recipe" inclusion in recipe
  ☐ support {version} and {arch} in ppa/pkg strings
  ☐ add repository support, not only ppa
  ☐ check for superuser!
+ ☐ add progress bar for multiple packages installation
+
+
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
+ ✔ multiple "recipe" inclusion in recipe @done (13-07-17 02:44)
+ ✘ preseeding @cancelled (13-07-17 01:43)
+ ✔ use proper debian frontend to avoid hangs @done (13-07-17 01:43)
