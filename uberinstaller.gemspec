@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
   LONGDESC
   gem.summary       = %q{Install lots of system packages from a single JSON configuration file}
   gem.homepage      = "https://github.com/endorama/UberInstaller"
+  gem.license = 'MIT'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
