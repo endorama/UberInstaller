@@ -101,8 +101,6 @@ module Uberinstaller
         elsif @pkg[:cmd][type].kind_of? String
           if File.exists? file
             exec_file file
-          else
-            exec @pkg[:cmd][type]
           end
         else
           raise Exception::CommandNotProcessable, @pkg_name, type
