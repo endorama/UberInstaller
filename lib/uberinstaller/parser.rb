@@ -4,6 +4,7 @@ require 'uberinstaller/logger'
 require 'uberinstaller/exception'
 
 require 'json'
+require 'shellwords'
 
 module Uberinstaller
   class Parser
@@ -38,6 +39,9 @@ module Uberinstaller
     def run
       begin
         @json = IO.read(@file)
+
+        @json = _replace_tokens(@json)
+
         # Comments are stripped out! FUCK YEAH!
         @data = JSON.parse @json, :symbolize_names => true
       rescue JSON::ParserError
@@ -46,6 +50,25 @@ module Uberinstaller
         @data
       end
     end
+
+    private
+
+      # Replace specific tokens with path
+      #
+      # @param file_content [String] the content of the json file in which the
+      #        substitution should take place
+      def _replace_tokens(file_content)
+        logger.debug "Replacing :cmds with #{Config.command_path.shellescape}"
+        file_content.gsub!(':cmds', Config.command_path.shellescape)
+        
+        logger.debug "Replacing :pkgs with #{Config.local_pkg_path.shellescape}"
+        file_content.gsub!(':pkgs', Config.local_pkg_path.shellescape)
+
+        logger.debug "Replacing :json with #{Config.json_path.shellescape}"
+        file_content.gsub!(':json', Config.json_path.shellescape)
+
+        file_content
+      end
 
   end
 end

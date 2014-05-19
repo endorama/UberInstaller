@@ -49,6 +49,21 @@ after all => cmds/after/all.sh
 
 Blocking package configuration as Debconf in Debian system must be properly avoided ( APT Package Manager use gnome DEBIAN_FRONTEND to avoid apt-get hangs)
 
+## Folder structure
+
+package
+├── cmds
+├── log
+├── pkgs
+└── package.json
+
+## Variables substitution
+
+You can use some variables in package.json:
+ - `:cmds`: path to package/cmds folder
+ - `:pgks`: path to package/pkgs folder
+ - `:json`: path to package/package.json file
+
 ## Docs
 
 http://rubydoc.info/docs/yard/file/docs/GettingStarted.md
