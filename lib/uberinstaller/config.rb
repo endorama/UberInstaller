@@ -32,7 +32,7 @@ module Uberinstaller
     @local_pkg_path = nil
     # @!attribute [r] json_path
     #   absolute path in which locate json file to be imported in configuration
-    @local_pkg_path = nil
+    @json_path = nil
     
     # @!attribute [rw] remote_package_manager
     #   the package manager used to install system type packages
