@@ -29,16 +29,20 @@ module Uberinstaller
                   :type => :boolean,
                   :default => false, 
                   :desc => "Enable dry run, no modification to the system will be made during this execution"
+    method_option :no_log,
+                  :type => :boolean,
+                  :default => false, 
+                  :desc => "Disable log creation, output logger on STDOUT"
     def install(file)
       Uberinstaller::Loggable.level = Logger::WARN
       Uberinstaller::Loggable.level = Logger::INFO  if options[:verbose]
       Uberinstaller::Loggable.level = Logger::DEBUG if options[:debug]
 
-      Uberinstaller::Loggable.log_path = File.join(File.dirname(file), 'log', "#{Time.now}.log") unless options[:debug]
+      Uberinstaller::Loggable.log_path = File.join(File.dirname(file), 'log', "#{Time.now}.log") unless options[:no_log]
 
       Uberinstaller::Config.uberdirectory = File.dirname file
       Uberinstaller::Config.dry_run = options[:dry_run]
-      
+
       begin
         runner = Uberinstaller.new file
         runner.preprocess
