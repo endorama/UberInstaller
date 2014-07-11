@@ -20,6 +20,9 @@ module Uberinstaller
     #
     # @param file [String] the file name to be used for this execution
     def initialize(file)
+      logger.debug Config.command_path
+      logger.debug Config.local_pkg_path
+      logger.debug Config.json_path
       logger.info "Processing JSON file: #{file}"
       
       # check if element has already been processed
