@@ -202,6 +202,8 @@ module Uberinstaller
               parser = Parser.new(file)
               data = parser.data[:packages].each { |p| p[1][:type] = get_package_type p[1] }
               nested_packages.merge! data
+
+              @packages.delete(pkg_name.to_sym)
             end
           end
         end
