@@ -236,7 +236,12 @@ module Uberinstaller
 
       def preprocess_json
         logger.debug 'JSON type validation'
-        validate 'json'
+        begin
+          validate 'json'
+        rescue Exception => e
+          @body[:skip] = true
+          raise e
+        end
       end
 
       def validate_json
